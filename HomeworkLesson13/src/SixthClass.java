@@ -1,6 +1,6 @@
 public class SixthClass {
 
-    public SixthClass getType(){
+    public SixthClass getType() {
         return this;
     }
 
@@ -9,7 +9,6 @@ public class SixthClass {
         System.out.println(test.getType());
     }
 }
-
 
 
 //6. One class with a method or two that return a type of the current class.
