@@ -24,6 +24,10 @@ public class EmployeeDaoImpl implements EmployeeDao {
         return null;
     }
 
+    public Employee[] getEmployees() {
+        return employees;
+    }
+
     @Override
     public boolean update(long employeeId, Employee updatedEmployee) {
         for (int i = 0; i < employees.length; i++) {

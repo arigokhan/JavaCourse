@@ -32,4 +32,8 @@ public class EmployeeServiceImpl implements EmployeeService {
     public void delete(long employeeId) {
         employeeDao.delete(employeeId);
     }
+
+    public Employee[] getEmployees(){
+        return employeeDao.getEmployees();
+    }
 }

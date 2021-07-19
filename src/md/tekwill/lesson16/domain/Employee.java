@@ -1,8 +1,13 @@
 package md.tekwill.lesson16.domain;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableColumn;
+import javax.swing.table.TableColumnModel;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.lang.*;
+import java.util.Vector;
 
 import md.tekwill.lesson16.service.impl.EmployeeServiceImpl;
 
@@ -19,6 +24,11 @@ public class Employee {
     private JTextField lastNameText;
     private JComboBox departmentBox;
     private JButton createButton;
+    private JTable table1;
+    private JScrollPane JScrollPanel;
+
+
+    EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
 
     public Employee(String firstName, String lastName, Department department) {
         id = ++idCount;
@@ -32,12 +42,13 @@ public class Employee {
 
         //id = ++idCount;
         //idText.setText(""+id);
-        addToJComboBox();
+        createUIComponents();
+        selectEmployees();
         createButton.addMouseListener(new MouseAdapter() {
             @Override
             public void mouseClicked(MouseEvent e) {
                 super.mouseClicked(e);
-                EmployeeServiceImpl employeeService = new EmployeeServiceImpl();
+
                 Department itDepartment = new Department(departmentBox.getSelectedItem().toString());
                 Employee employee1 = employeeService.create(new Employee(firstNameText.getText(), lastNameText.getText(), itDepartment));
                 Employee savedEmployee = employeeService.create(employee1);
@@ -45,7 +56,9 @@ public class Employee {
                 idText.setText("" + savedEmployee.id);
 
                 System.out.println(employeeService.read(savedEmployee.getId()));
+                selectEmployees();
                 JOptionPane.showMessageDialog(null, "Object created succesufully!");
+
 
             }
         });
@@ -94,11 +107,58 @@ public class Employee {
     }
 
     private void createUIComponents() {
-        // TODO: place custom component creation code here
+        table1.setModel(new javax.swing.table.DefaultTableModel(
+                new Object[][]{
+
+                },
+                new String[]{
+                        "ID", "First Name", "Last Name", "Department"
+                }
+        ));
+
+        JScrollPanel.setViewportView(table1);
+
+
+        addToJComboBox();
     }
 
     public void addToJComboBox() {
         departmentBox.addItem(("IT"));
         departmentBox.addItem(("HR"));
     }
+
+    public void selectEmployees() {
+        Employee[] listOfEmployees = employeeService.getEmployees();
+
+        for (Employee employee : listOfEmployees) {
+            if (employee != null) {
+                Vector v = new Vector();
+                v.add(employee.id);
+                v.add(employee.firstName);
+                v.add(employee.lastName);
+                v.add(employee.department.getName());
+                DefaultTableModel dt = (DefaultTableModel) table1.getModel();
+                dt.addRow(v);
+            }
+
+        }
+
+    }
+
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
